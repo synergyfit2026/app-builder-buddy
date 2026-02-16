@@ -3,6 +3,9 @@ import { motion } from "framer-motion";
 import { Dumbbell, Utensils, Brain, Target, Camera, TrendingUp, LogIn } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import heroImage from "@/assets/hero-fitness.jpg";
+import sportStrength from "@/assets/sport-strength.jpg";
+import sportNutrition from "@/assets/sport-nutrition.jpg";
+import sportCardio from "@/assets/sport-cardio.jpg";
 
 const Navbar = () => {
   const { user, signOut } = useAuth();
@@ -145,6 +148,55 @@ const Features = () => (
   </section>
 );
 
+const showcaseImages = [
+  { src: sportStrength, label: "Trening snage", desc: "Personalizovani programi za svaki nivo" },
+  { src: sportNutrition, label: "Zdrava ishrana", desc: "Planovi obroka prilagođeni tvom budžetu" },
+  { src: sportCardio, label: "Kardio & Izdržljivost", desc: "Treninzi koji se uklapaju u tvoj dan" },
+];
+
+const Showcase = () => (
+  <section className="py-24">
+    <div className="container mx-auto px-6">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        className="text-center mb-16"
+      >
+        <h2 className="font-display text-4xl md:text-5xl font-bold mb-4">
+          Treniraj <span className="text-gradient">pametnije</span>
+        </h2>
+        <p className="text-muted-foreground text-lg max-w-xl mx-auto">
+          Sve što ti treba za zdraviji život — na jednom mestu.
+        </p>
+      </motion.div>
+      <div className="grid md:grid-cols-3 gap-6">
+        {showcaseImages.map((img, i) => (
+          <motion.div
+            key={img.label}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.15 }}
+            className="group relative overflow-hidden rounded-2xl"
+          >
+            <img
+              src={img.src}
+              alt={img.label}
+              className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6">
+              <h3 className="font-display font-bold text-lg text-background">{img.label}</h3>
+              <p className="text-background/80 text-sm">{img.desc}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
 const steps = [
   { num: "01", title: "Unesi podatke", desc: "Ciljevi, nivo aktivnosti, preferencije ishrane." },
   { num: "02", title: "AI generiše plan", desc: "Personalizovan plan treninga i ishrane samo za tebe." },
@@ -276,6 +328,7 @@ const Landing = () => (
     <Navbar />
     <Hero />
     <Features />
+    <Showcase />
     <HowItWorks />
     <Pricing />
     <Footer />
