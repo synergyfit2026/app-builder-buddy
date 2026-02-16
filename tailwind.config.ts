@@ -62,9 +62,9 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         sf: {
-          lime: "hsl(var(--sf-lime))",
+          warm: "hsl(var(--sf-warm))",
           glow: "hsl(var(--sf-glow))",
-          orange: "hsl(var(--sf-orange))",
+          green: "hsl(var(--sf-green))",
           glass: "hsl(var(--sf-glass))",
         },
       },
