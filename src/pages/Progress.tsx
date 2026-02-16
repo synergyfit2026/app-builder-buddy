@@ -42,7 +42,7 @@ const Progress = () => {
           {[
             { icon: Flame, label: "Ukupno kalorija", value: `${totalCalories}`, sub: "kcal ove nedelje", color: "text-accent" },
             { icon: Calendar, label: "Treninzi", value: `${completedDays}/7`, sub: "završeni dani", color: "text-primary" },
-            { icon: TrendingUp, label: "Streak", value: "4", sub: "dana zaredom", color: "text-sf-lime" },
+            { icon: TrendingUp, label: "Streak", value: "4", sub: "dana zaredom", color: "text-sf-green" },
             { icon: Target, label: "Cilj", value: "72%", sub: "ostvaren", color: "text-primary" },
           ].map((stat, i) => (
             <motion.div

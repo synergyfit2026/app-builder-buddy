@@ -267,7 +267,7 @@ const Dashboard = () => {
           {[
             { icon: Flame, label: "Kalorije", value: `${currentDay.calories}`, color: "text-accent" },
             { icon: Clock, label: "Trajanje", value: "~45 min", color: "text-primary" },
-            { icon: Droplets, label: "Voda", value: "2.5L", color: "text-sf-lime" },
+            { icon: Droplets, label: "Voda", value: "2.5L", color: "text-sf-green" },
           ].map((stat) => (
             <div key={stat.label} className="glass-card p-4 text-center">
               <stat.icon className={`w-5 h-5 mx-auto mb-2 ${stat.color}`} />
