@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Dumbbell, Mail, Lock, ArrowRight, User } from "lucide-react";
+import { Dumbbell, Mail, Lock, ArrowRight, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -54,9 +54,13 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
-      <Link to="/" className="flex items-center gap-2 mb-10">
+      <Link to="/" className="flex items-center gap-2 mb-2">
         <Dumbbell className="w-7 h-7 text-primary" />
         <span className="font-display font-bold text-2xl text-foreground">SynergyFit</span>
+      </Link>
+      <Link to="/" className="text-muted-foreground text-sm hover:text-foreground transition-colors flex items-center gap-1 mb-8">
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Nazad na početnu
       </Link>
 
       <motion.div
