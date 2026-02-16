@@ -1,29 +1,61 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Dumbbell, Utensils, Brain, Target, Camera, TrendingUp } from "lucide-react";
+import { Dumbbell, Utensils, Brain, Target, Camera, TrendingUp, LogIn } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import heroImage from "@/assets/hero-fitness.jpg";
 
-const Navbar = () => (
-  <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
-    <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-      <Link to="/" className="flex items-center gap-2">
-        <Dumbbell className="w-6 h-6 text-primary" />
-        <span className="font-display font-bold text-xl text-foreground">SynergyFit</span>
-      </Link>
-      <div className="hidden md:flex items-center gap-8">
-        <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Funkcionalnosti</a>
-        <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Kako radi</a>
-        <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Cene</a>
+const Navbar = () => {
+  const { user, signOut } = useAuth();
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
+      <div className="container mx-auto px-6 h-16 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2">
+          <Dumbbell className="w-6 h-6 text-primary" />
+          <span className="font-display font-bold text-xl text-foreground">SynergyFit</span>
+        </Link>
+        <div className="hidden md:flex items-center gap-8">
+          <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Funkcionalnosti</a>
+          <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Kako radi</a>
+          <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Cene</a>
+        </div>
+        <div className="flex items-center gap-3">
+          {user ? (
+            <>
+              <Link
+                to="/dashboard"
+                className="bg-gradient-primary text-primary-foreground font-semibold px-5 py-2 rounded-lg text-sm hover:opacity-90 transition-opacity"
+              >
+                Dashboard
+              </Link>
+              <button
+                onClick={() => signOut()}
+                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+              >
+                Odjavi se
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/auth"
+                className="text-muted-foreground hover:text-foreground text-sm transition-colors flex items-center gap-1"
+              >
+                <LogIn className="w-4 h-4" />
+                Prijava
+              </Link>
+              <Link
+                to="/auth"
+                className="bg-gradient-primary text-primary-foreground font-semibold px-5 py-2 rounded-lg text-sm hover:opacity-90 transition-opacity"
+              >
+                Započni besplatno
+              </Link>
+            </>
+          )}
+        </div>
       </div>
-      <Link
-        to="/onboarding"
-        className="bg-gradient-primary text-primary-foreground font-semibold px-5 py-2 rounded-lg text-sm hover:opacity-90 transition-opacity"
-      >
-        Započni besplatno
-      </Link>
-    </div>
-  </nav>
-);
+    </nav>
+  );
+};
 
 const Hero = () => (
   <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
