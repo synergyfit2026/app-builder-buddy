@@ -63,8 +63,8 @@ const Navbar = () => {
 const Hero = () => (
   <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
     <div className="absolute inset-0">
-      <img src={heroImage} alt="SynergyFit fitness" className="w-full h-full object-cover opacity-30" />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
+      <img src={heroImage} alt="SynergyFit fitness" className="w-full h-full object-cover opacity-20" />
+      <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/70 to-background" />
     </div>
     <div className="relative container mx-auto px-6 py-20 text-center">
       <motion.div
