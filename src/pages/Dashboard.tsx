@@ -3,8 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Dumbbell, Flame, Droplets, TrendingUp, Check, Clock,
-  ChevronRight, Calendar, Activity, Home, BarChart3, User,
+  ChevronRight, Calendar, Activity, Home, BarChart3, User, LogOut,
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Exercise {
   name: string;
@@ -126,6 +127,7 @@ const generatePlan = (goal: string | null): DayPlan[] => {
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { signOut } = useAuth();
   const [selectedDay, setSelectedDay] = useState(0);
   const [plan, setPlan] = useState<DayPlan[]>([]);
   const [userData, setUserData] = useState<any>(null);
@@ -178,11 +180,18 @@ const Dashboard = () => {
               <h1 className="font-display text-xl font-bold text-foreground">Tvoj plan</h1>
               <p className="text-muted-foreground text-sm">Cilj: {goalLabels[userData?.goal] || "Zdravlje"}</p>
             </div>
-            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3">
               <div className="glass-card px-3 py-1.5 flex items-center gap-2">
                 <Flame className="w-4 h-4 text-accent" />
                 <span className="text-sm font-medium text-foreground">{currentDay.calories} kcal</span>
               </div>
+              <button
+                onClick={() => signOut().then(() => navigate("/"))}
+                className="glass-card px-3 py-1.5 flex items-center gap-2 hover:border-destructive/50 transition-colors"
+              >
+                <LogOut className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm font-medium text-muted-foreground">Odjavi se</span>
+              </button>
             </div>
           </div>
         </div>
