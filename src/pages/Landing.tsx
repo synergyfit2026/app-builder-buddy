@@ -60,7 +60,9 @@ const Navbar = () => {
   );
 };
 
-const Hero = () => (
+const Hero = () => {
+  const { user } = useAuth();
+  return (
   <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
     <div className="absolute inset-0">
       <img src={heroImage} alt="SynergyFit fitness" className="w-full h-full object-cover opacity-40" />
@@ -84,7 +86,7 @@ const Hero = () => (
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            to="/onboarding"
+            to={user ? "/onboarding" : "/auth"}
             className="bg-gradient-primary text-primary-foreground font-bold px-8 py-4 rounded-xl text-lg hover:opacity-90 transition-opacity glow-primary"
           >
             Započni transformaciju
@@ -99,7 +101,8 @@ const Hero = () => (
       </motion.div>
     </div>
   </section>
-);
+  );
+};
 
 const features = [
   { icon: Brain, title: "AI personalizacija", desc: "Planovi se prilagođavaju u realnom vremenu na osnovu tvog ponašanja i napretka." },
@@ -273,7 +276,7 @@ const Pricing = () => (
               </li>
             ))}
           </ul>
-          <Link to="/onboarding" className="block text-center border border-border text-foreground font-semibold py-3 rounded-xl hover:bg-secondary transition-colors">
+          <Link to="/auth" className="block text-center border border-border text-foreground font-semibold py-3 rounded-xl hover:bg-secondary transition-colors">
             Započni besplatno
           </Link>
         </motion.div>
@@ -302,7 +305,7 @@ const Pricing = () => (
               </li>
             ))}
           </ul>
-          <Link to="/onboarding" className="block text-center bg-gradient-primary text-primary-foreground font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity">
+          <Link to="/auth" className="block text-center bg-gradient-primary text-primary-foreground font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity">
             Započni Premium
           </Link>
         </motion.div>

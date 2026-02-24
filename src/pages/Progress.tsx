@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Activity, BarChart3, User, TrendingUp, Flame, Calendar, Target, LogOut } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
+import { Home, Activity, BarChart3, User, TrendingUp, Flame, Calendar, Target } from "lucide-react";
 
 const weekData = [
   { day: "Pon", completed: true, calories: 350 },
@@ -16,7 +15,6 @@ const weekData = [
 
 const Progress = () => {
   const navigate = useNavigate();
-  const { signOut } = useAuth();
   const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
@@ -32,18 +30,9 @@ const Progress = () => {
   return (
     <div className="min-h-screen bg-background pb-24">
       <div className="border-b border-border bg-card/50 backdrop-blur-xl sticky top-0 z-30">
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div>
-            <h1 className="font-display text-xl font-bold text-foreground">Tvoj napredak</h1>
-            <p className="text-muted-foreground text-sm">Ova nedelja</p>
-          </div>
-          <button
-            onClick={() => signOut().then(() => navigate("/"))}
-            className="glass-card px-3 py-1.5 flex items-center gap-2 hover:border-destructive/50 transition-colors"
-          >
-            <LogOut className="w-4 h-4 text-muted-foreground" />
-            <span className="text-sm font-medium text-muted-foreground">Odjavi se</span>
-          </button>
+        <div className="container mx-auto px-6 py-4">
+          <h1 className="font-display text-xl font-bold text-foreground">Tvoj napredak</h1>
+          <p className="text-muted-foreground text-sm">Ova nedelja</p>
         </div>
       </div>
 
@@ -119,7 +108,7 @@ const Progress = () => {
               { icon: Home, label: "Početna", to: "/" },
               { icon: Activity, label: "Plan", to: "/dashboard" },
               { icon: BarChart3, label: "Napredak", to: "/progress", active: true },
-              { icon: User, label: "Profil", to: "/dashboard" },
+              { icon: User, label: "Profil", to: "/profile" },
             ].map((item) => (
               <Link
                 key={item.label}
