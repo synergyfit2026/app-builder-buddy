@@ -1,31 +1,39 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Activity, BarChart3, User, LogOut, Dumbbell, Mail } from "lucide-react";
+import { Home, Activity, BarChart3, User, LogOut, Mail, Check } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+
+const goals = [
+  { key: "weight_loss", label: "Mršavljenje", emoji: "🔥" },
+  { key: "muscle", label: "Mišićna masa", emoji: "💪" },
+  { key: "health", label: "Zdraviji život", emoji: "🌿" },
+  { key: "flexibility", label: "Fleksibilnost", emoji: "🧘" },
+];
 
 const Profile = () => {
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const [userData, setUserData] = useState<any>(null);
+  const [editingGoal, setEditingGoal] = useState(false);
 
   useEffect(() => {
     const stored = localStorage.getItem("sf_user");
     if (stored) setUserData(JSON.parse(stored));
   }, []);
 
-  const goalLabels: Record<string, string> = {
-    weight_loss: "Mršavljenje",
-    muscle: "Mišićna masa",
-    health: "Zdraviji život",
-    flexibility: "Fleksibilnost",
-  };
-
   const activityLabels: Record<string, string> = {
     beginner: "Početnik",
     moderate: "Umeren",
     active: "Aktivan",
     athlete: "Sportista",
+  };
+
+  const handleGoalChange = (newGoal: string) => {
+    const updated = { ...userData, goal: newGoal };
+    setUserData(updated);
+    localStorage.setItem("sf_user", JSON.stringify(updated));
+    setEditingGoal(false);
   };
 
   const handleLogout = async () => {
@@ -65,6 +73,59 @@ const Profile = () => {
           </div>
         </motion.div>
 
+        {/* Goal Changer */}
+        {userData && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="glass-card p-6"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-display font-semibold text-foreground">Tvoj cilj</h3>
+              {!editingGoal && (
+                <button
+                  onClick={() => setEditingGoal(true)}
+                  className="text-primary text-sm font-medium hover:underline"
+                >
+                  Promeni
+                </button>
+              )}
+            </div>
+
+            {editingGoal ? (
+              <div className="grid grid-cols-2 gap-3">
+                {goals.map((g) => (
+                  <button
+                    key={g.key}
+                    onClick={() => handleGoalChange(g.key)}
+                    className={`p-4 rounded-xl border text-left transition-all ${
+                      userData.goal === g.key
+                        ? "border-primary bg-primary/10"
+                        : "border-border hover:border-primary/40"
+                    }`}
+                  >
+                    <span className="text-2xl mb-2 block">{g.emoji}</span>
+                    <span className="font-display font-medium text-sm text-foreground">{g.label}</span>
+                    {userData.goal === g.key && (
+                      <Check className="w-4 h-4 text-primary mt-1" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">
+                  {goals.find((g) => g.key === userData.goal)?.emoji || "🎯"}
+                </span>
+                <span className="font-display font-medium text-foreground">
+                  {goals.find((g) => g.key === userData.goal)?.label || "—"}
+                </span>
+              </div>
+            )}
+          </motion.div>
+        )}
+
         {/* Stats */}
         {userData && (
           <motion.div
@@ -75,7 +136,6 @@ const Profile = () => {
           >
             <h3 className="font-display font-semibold text-foreground mb-2">Tvoji podaci</h3>
             {[
-              { label: "Cilj", value: goalLabels[userData.goal] || "—" },
               { label: "Godine", value: userData.age ? `${userData.age} god` : "—" },
               { label: "Težina", value: userData.weight ? `${userData.weight} kg` : "—" },
               { label: "Visina", value: userData.height ? `${userData.height} cm` : "—" },
