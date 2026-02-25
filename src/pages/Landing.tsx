@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Dumbbell, Utensils, Brain, Target, Camera, TrendingUp, LogIn } from "lucide-react";
+import { Dumbbell, Utensils, Brain, Target, Camera, TrendingUp, LogIn, Flame, Leaf, Apple, Salad, Crown } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import heroImage from "@/assets/hero-fitness.jpg";
 import sportStrength from "@/assets/sport-strength.jpg";
@@ -326,16 +327,165 @@ const Footer = () => (
   </footer>
 );
 
-const Landing = () => (
-  <div className="min-h-screen bg-background">
-    <Navbar />
-    <Hero />
-    <Features />
-    <Showcase />
-    <HowItWorks />
-    <Pricing />
-    <Footer />
-  </div>
-);
+const nutritionPlans: Record<string, { title: string; meals: { name: string; desc: string; kcal: number }[] }> = {
+  weight_loss: {
+    title: "Plan ishrane za mršavljenje",
+    meals: [
+      { name: "Doručak", desc: "Ovsena kaša sa bobičastim voćem i chia sjemenkama", kcal: 320 },
+      { name: "Užina", desc: "Grčki jogurt sa bademima", kcal: 180 },
+      { name: "Ručak", desc: "Grilovana piletina sa salatom i kvinojom", kcal: 450 },
+      { name: "Užina", desc: "Jabuka i kikiriki puter", kcal: 200 },
+      { name: "Večera", desc: "Riba na pari sa povrćem na grilu", kcal: 380 },
+    ],
+  },
+  muscle: {
+    title: "Plan ishrane za mišićnu masu",
+    meals: [
+      { name: "Doručak", desc: "Omlet sa 4 jajeta, avokado i integralni hleb", kcal: 550 },
+      { name: "Užina", desc: "Protein šejk sa bananom i ovsenim pahuljicama", kcal: 400 },
+      { name: "Ručak", desc: "Biftek sa slatkim krompirom i brokolijem", kcal: 650 },
+      { name: "Užina", desc: "Cottage cheese sa orasima", kcal: 300 },
+      { name: "Večera", desc: "Piletina sa pirinčem i povrćem", kcal: 580 },
+    ],
+  },
+  health: {
+    title: "Plan ishrane za zdraviji život",
+    meals: [
+      { name: "Doručak", desc: "Smoothie od spinata, banane i lanenog sjemena", kcal: 280 },
+      { name: "Užina", desc: "Šaka mješavine orašastih plodova", kcal: 200 },
+      { name: "Ručak", desc: "Losos sa integralnim pirinčem i salatom", kcal: 480 },
+      { name: "Užina", desc: "Hummus sa štapićima povrća", kcal: 180 },
+      { name: "Večera", desc: "Pileća supa sa povrćem i integralnim hlebom", kcal: 400 },
+    ],
+  },
+  flexibility: {
+    title: "Plan ishrane za fleksibilnost",
+    meals: [
+      { name: "Doručak", desc: "Açai bowl sa granolom i voćem", kcal: 350 },
+      { name: "Užina", desc: "Zeleni smoothie sa đumbirom", kcal: 150 },
+      { name: "Ručak", desc: "Salata sa tunjevinom, avokado i sjemenkama", kcal: 420 },
+      { name: "Užina", desc: "Voćna salata sa medom i limeom", kcal: 160 },
+      { name: "Večera", desc: "Tofu stir-fry sa povrćem i sosom od susama", kcal: 380 },
+    ],
+  },
+};
+
+const goalEmojis: Record<string, string> = {
+  weight_loss: "🔥",
+  muscle: "💪",
+  health: "🌿",
+  flexibility: "🧘",
+};
+
+const goalLabels: Record<string, string> = {
+  weight_loss: "Mršavljenje",
+  muscle: "Mišićna masa",
+  health: "Zdraviji život",
+  flexibility: "Fleksibilnost",
+};
+
+const LoggedInLanding = () => {
+  const [userData, setUserData] = useState<any>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("sf_user");
+    if (stored) setUserData(JSON.parse(stored));
+  }, []);
+
+  const goal = userData?.goal || "health";
+  const plan = nutritionPlans[goal] || nutritionPlans.health;
+  const totalKcal = plan.meals.reduce((s, m) => s + m.kcal, 0);
+
+  return (
+    <section className="pt-24 pb-12">
+      <div className="container mx-auto px-6">
+        {/* Welcome */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <p className="text-muted-foreground text-sm mb-1">Tvoj cilj: {goalEmojis[goal]} {goalLabels[goal]}</p>
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground">
+            Plan <span className="text-gradient">ishrane</span> za danas
+          </h2>
+          <p className="text-muted-foreground mt-2">Ukupno: <span className="text-primary font-semibold">{totalKcal} kcal</span></p>
+        </motion.div>
+
+        {/* Meals */}
+        <div className="space-y-4 mb-10">
+          {plan.meals.map((meal, i) => (
+            <motion.div
+              key={`${meal.name}-${i}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className="glass-card p-5 flex items-start gap-4"
+            >
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <Utensils className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-display font-semibold text-foreground text-sm">{meal.name}</h4>
+                  <span className="text-muted-foreground text-xs font-medium">{meal.kcal} kcal</span>
+                </div>
+                <p className="text-muted-foreground text-sm mt-1">{meal.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Upgrade Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="glass-card p-8 border-primary/30 glow-primary text-center"
+        >
+          <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <Crown className="w-7 h-7 text-primary" />
+          </div>
+          <h3 className="font-display text-2xl font-bold text-foreground mb-2">Nadogradi na Premium</h3>
+          <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
+            Otključaj naprednu AI personalizaciju, prepoznavanje obroka kamerom, detaljne statistike i više.
+          </p>
+          <div className="mb-6">
+            <span className="font-display text-4xl font-bold text-foreground">$9.99</span>
+            <span className="text-muted-foreground text-sm">/mesečno</span>
+          </div>
+          <button className="bg-gradient-primary text-primary-foreground font-semibold px-8 py-3 rounded-xl hover:opacity-90 transition-opacity">
+            Započni Premium
+          </button>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+const Landing = () => {
+  const { user } = useAuth();
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      {user ? (
+        <>
+          <LoggedInLanding />
+          <Footer />
+        </>
+      ) : (
+        <>
+          <Hero />
+          <Features />
+          <Showcase />
+          <HowItWorks />
+          <Pricing />
+          <Footer />
+        </>
+      )}
+    </div>
+  );
+};
 
 export default Landing;
