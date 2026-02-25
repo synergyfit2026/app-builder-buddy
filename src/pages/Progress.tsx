@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, Activity, BarChart3, User, TrendingUp, Flame, Calendar, Target } from "lucide-react";
+import { TrendingUp, Flame, Calendar, Target } from "lucide-react";
+import BottomNav from "@/components/BottomNav";
 
 const weekData = [
   { day: "Pon", completed: true, calories: 350 },
@@ -100,30 +101,7 @@ const Progress = () => {
         </motion.div>
       </div>
 
-      {/* Bottom Nav */}
-      <div className="fixed bottom-0 left-0 right-0 bg-card/90 backdrop-blur-xl border-t border-border">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-around py-3">
-            {[
-              { icon: Home, label: "Početna", to: "/" },
-              { icon: Activity, label: "Plan", to: "/dashboard" },
-              { icon: BarChart3, label: "Napredak", to: "/progress", active: true },
-              { icon: User, label: "Profil", to: "/profile" },
-            ].map((item) => (
-              <Link
-                key={item.label}
-                to={item.to}
-                className={`flex flex-col items-center gap-1 ${
-                  item.active ? "text-primary" : "text-muted-foreground hover:text-foreground"
-                } transition-colors`}
-              >
-                <item.icon className="w-5 h-5" />
-                <span className="text-xs font-medium">{item.label}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+      <BottomNav />
     </div>
   );
 };

@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Dumbbell, Utensils, Brain, Target, Camera, TrendingUp, LogIn, Flame, Leaf, Apple, Salad, Crown } from "lucide-react";
+import { Dumbbell, Utensils, Brain, Target, Camera, TrendingUp, LogIn, Flame, Leaf, Apple, Salad } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import BottomNav from "@/components/BottomNav";
 import heroImage from "@/assets/hero-fitness.jpg";
 import sportStrength from "@/assets/sport-strength.jpg";
 import sportNutrition from "@/assets/sport-nutrition.jpg";
 import sportCardio from "@/assets/sport-cardio.jpg";
 
 const Navbar = () => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
@@ -17,28 +18,15 @@ const Navbar = () => {
           <Dumbbell className="w-6 h-6 text-primary" />
           <span className="font-display font-bold text-xl text-foreground">SynergyFit</span>
         </Link>
-        <div className="hidden md:flex items-center gap-8">
-          <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Funkcionalnosti</a>
-          <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Kako radi</a>
-          <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Cene</a>
-        </div>
+        {!user && (
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Funkcionalnosti</a>
+            <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Kako radi</a>
+            <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors text-sm">Cene</a>
+          </div>
+        )}
         <div className="flex items-center gap-3">
-          {user ? (
-            <>
-              <Link
-                to="/dashboard"
-                className="bg-gradient-primary text-primary-foreground font-semibold px-5 py-2 rounded-lg text-sm hover:opacity-90 transition-opacity"
-              >
-                Dashboard
-              </Link>
-              <button
-                onClick={() => signOut()}
-                className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-              >
-                Odjavi se
-              </button>
-            </>
-          ) : (
+          {user ? null : (
             <>
               <Link
                 to="/auth"
@@ -435,29 +423,6 @@ const LoggedInLanding = () => {
             </motion.div>
           ))}
         </div>
-
-        {/* Upgrade Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="glass-card p-8 border-primary/30 glow-primary text-center"
-        >
-          <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-            <Crown className="w-7 h-7 text-primary" />
-          </div>
-          <h3 className="font-display text-2xl font-bold text-foreground mb-2">Nadogradi na Premium</h3>
-          <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
-            Otključaj naprednu AI personalizaciju, prepoznavanje obroka kamerom, detaljne statistike i više.
-          </p>
-          <div className="mb-6">
-            <span className="font-display text-4xl font-bold text-foreground">$9.99</span>
-            <span className="text-muted-foreground text-sm">/mesečno</span>
-          </div>
-          <button className="bg-gradient-primary text-primary-foreground font-semibold px-8 py-3 rounded-xl hover:opacity-90 transition-opacity">
-            Započni Premium
-          </button>
-        </motion.div>
       </div>
     </section>
   );
@@ -470,10 +435,10 @@ const Landing = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       {user ? (
-        <>
+        <div className="pb-24">
           <LoggedInLanding />
-          <Footer />
-        </>
+          <BottomNav />
+        </div>
       ) : (
         <>
           <Hero />
